@@ -6,8 +6,156 @@
     <title>Çevre Ayak İzi Hesaplayıcı</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* CSS stilleri öncekiyle aynı, bu alanı değiştirmeye gerek yok */
-        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background-color:#f4f7f6;color:#333;margin:0;padding:20px;display:flex;justify-content:center}.container{max-width:800px;width:100%;background-color:#fff;padding:20px 40px;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,.1)}h1{text-align:center;color:#2c3e50}.tabs{display:flex;justify-content:center;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid #e0e0e0}.tab-button{padding:10px 15px;cursor:pointer;border:none;background-color:transparent;font-size:1em;color:#7f8c8d;border-bottom:3px solid transparent;transition:all .3s ease}.tab-button:hover{color:#3498db}.tab-button.active{color:#2980b9;border-bottom:3px solid #2980b9}.content-panel{display:none}.content-panel.active{display:block}.form-group{margin-bottom:15px}label{display:block;margin-bottom:5px;font-weight:700;color:#555}input[type=number],input[type=text]{width:100px;padding:8px;border:1px solid #ccc;border-radius:4px;box-sizing:border-box}.question-block{background-color:#f9f9f9;padding:15px;border-radius:5px;margin-bottom:15px;border-left:4px solid #3498db}.question-block p{font-weight:700;margin:0 0 10px}.question-block label{font-weight:400;display:block;margin-bottom:5px}.calc-button{display:block;width:100%;padding:12px;background-color:#27ae60;color:#fff;border:none;border-radius:5px;font-size:1.2em;cursor:pointer;margin-top:20px;transition:background-color .3s ease}.calc-button:hover{background-color:#229954}.result-area{margin-top:25px;padding:15px;border-radius:5px;background-color:#ecf0f1;text-align:center}.placeholder-content{text-align:center;padding:50px 20px;font-size:1.5em;color:#95a5a6}.chart-container{display:flex;flex-wrap:wrap;justify-content:space-around;gap:20px;margin-top:20px}.chart-box{width:100%;max-width:350px}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 1em;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            color: #3498db;
+        }
+        .tab-button.active {
+            color: #2980b9;
+            border-bottom: 3px solid #2980b9;
+        }
+        .content-panel {
+            display: none;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"], input[type="text"] {
+            width: 100px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .question-block {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+        }
+        .question-block p {
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        .question-block label {
+            font-weight: normal;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .calc-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .calc-button:hover {
+            background-color: #229954;
+        }
+        .result-area {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            text-align: center;
+        }
+        .placeholder-content {
+            text-align: center;
+            padding: 50px 20px;
+            font-size: 1.5em;
+            color: #95a5a6;
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .chart-box {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        /* ----- YENİ EKLENEN STİLLER ----- */
+        .myths-container {
+            padding-top: 10px;
+        }
+        .myth-card {
+            background-color: #f8f9fa;
+            border-left: 5px solid #e67e22; /* Turuncu bir renk */
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .myth-card h3 {
+            color: #d35400; /* Daha koyu turuncu */
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .myth-card p {
+            line-height: 1.6;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+        .myth-card strong {
+            color: #2c3e50;
+        }
+        /* ----- YENİ EKLENEN STİLLER BİTİŞ ----- */
+
     </style>
 </head>
 <body>
@@ -21,33 +169,29 @@
             <button class="tab-button" onclick="showPanel('chatbot')">🤖 Chatbot</button>
         </div>
 
-        <div id="waterPanel" class="content-panel active">
-             </div>
+        <div id="waterPanel" class="content-panel active"></div>
 
-        <div id="carbonPanel" class="content-panel">
-            </div>
+        <div id="carbonPanel" class="content-panel"></div>
         
         <div id="averagesPanel" class="content-panel">
-            <div id="averagesResult" class="result-area">
-                </div>
-             <div class="chart-container">
+            <div id="averagesResult" class="result-area"></div>
+            <div class="chart-container">
                 <div class="chart-box"><canvas id="averagesChart"></canvas></div>
             </div>
         </div>
         
         <div id="mythsPanel" class="content-panel"></div>
+
         <div id="chatbotPanel" class="content-panel"></div>
     </div>
 
 <script>
-// ---------- Önceki JS kodunun tamamını bu yeni kodla değiştirin ----------
-
 // ---------- Genel Fonksiyonlar ----------
 document.addEventListener('DOMContentLoaded', () => {
     // HTML'in ilgili bölümlerini doldurmak için bu fonksiyonları çağırın
-    const waterForm = document.getElementById('waterPanel');
-    if (waterForm) {
-        waterForm.innerHTML = `
+    const waterPanel = document.getElementById('waterPanel');
+    if (waterPanel) {
+        waterPanel.innerHTML = `
             <form id="waterForm">
                 <p>Lütfen aşağıdaki soruları günlük tüketim miktarlarınıza göre cevaplayınız.</p>
             </form>
@@ -63,9 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         populateWaterQuestions();
     }
-    const carbonForm = document.getElementById('carbonPanel');
-    if(carbonForm) {
-        carbonForm.innerHTML = `
+    const carbonPanel = document.getElementById('carbonPanel');
+    if(carbonPanel) {
+        carbonPanel.innerHTML = `
             <form id="carbonForm">
                 <p>Lütfen aşağıdaki 10 soruyu cevaplayın.</p>
             </form>
@@ -73,8 +217,51 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="carbonResult" class="result-area" style="display:none;"></div>`;
         populateCarbonQuestions();
     }
+
+    // ----- YENİ EKLENEN BÖLÜM -----
     const mythsPanel = document.getElementById('mythsPanel');
-    if(mythsPanel) mythsPanel.innerHTML = `<div class="placeholder-content">Yakında Burada...</div>`;
+    if(mythsPanel) {
+        mythsPanel.innerHTML = `
+        <div class="myths-container">
+            <div class="myth-card">
+                <h3>YANLIŞ 1: "Kağıt poşetler plastikten daha çevrecidir."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Kağıt poşetler biyolojik olarak çözünür olsa da, üretiminde çok fazla su, enerji ve kimyasal kullanılır. Dayanıksızdır, tekrar kullanımı zordur.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Bir kağıt poşetin çevresel etkisi bir plastik poşetten daha fazla olabilir – eğer sadece bir kez kullanılıyorsa.</p>
+                <p><strong>♻ En sürdürülebilir olan:</strong> Bez çanta ya da uzun ömürlü plastik torbaları tekrar tekrar kullanmak.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 2: "Biyoplastikler doğaya zararsızdır."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Biyoplastikler bitki bazlı olsa da, doğada kolayca çözünmezler ve endüstriyel kompostlama gerekir. Yani çöpe atıldığında mikroplastiğe dönüşebilirler.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Bir restoranda kullanılan "biyobozunur çatal" doğaya atıldığında yıllarca kalabilir. "Biyo" etiketi güvenli olduğu anlamına gelmez.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 3: "Elektrikli araçlar sıfır emisyonludur."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Kullanım sırasında egzoz salmazlar ama batarya üretimi, elektrik kaynağı (kömür mü, güneş mi?) gibi faktörlere bağlı olarak önemli çevresel etkileri olabilir.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Bir elektrikli arabanın karbon ayak izi, üretim aşamasında klasik araçtan bile fazla olabilir. Ancak uzun vadede, temiz enerjiyle şarj edilirse daha sürdürülebilirdir.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 4: "Geri dönüşüm, çevre sorunlarını çözer."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Geri dönüşüm önemlidir ama tek başına yeterli değildir. Asıl amaç tüketimi azaltmak ve yeniden kullanmaktır.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Her gün plastik şişe geri dönüştürmek yerine, bir matara kullanmak geri dönüşüm ihtiyacını da ortadan kaldırır.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 5: "Cam ambalaj plastikten iyidir."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Cam tekrar kullanılabilir ama üretimi çok yüksek enerji ister ve taşıması daha ağır olduğu için nakliyede daha fazla karbon salımı yaratır.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Bir cam şişe, bir plastik şişeye göre daha çevreci olabilir ama ancak defalarca kullanılırsa. Aksi halde tam tersi olabilir.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 6: "Yerel ürünler her zaman daha sürdürülebilirdir."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Yerellik avantajlı olabilir ama ürün üretim yöntemi, sezon dışı olması, serada yetişmesi gibi etkenler çevresel etkiyi artırabilir.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Yerel serada ısıtılarak yetişen domates, mevsiminde geleneksel yöntemle üretilen ithal domatesten daha yüksek karbon ayak izi bırakabilir.</p>
+            </div>
+            <div class="myth-card">
+                <h3>YANLIŞ 7: "Bitki bazlı ürünler her zaman daha çevrecidir."</h3>
+                <p><strong>➡ DOĞRUSU:</strong> Genelde doğrudur, ama üretim şekli çok önemlidir.</p>
+                <p><strong>🔍 ÖRNEK:</strong> Avokado gibi "bitkisel süper gıdalar", yüksek su tüketimi ve ormansızlaşmaya yol açabilir. Ayrıca çok uzak mesafelerden taşınırsa karbon salımı yükselir.</p>
+            </div>
+        </div>`;
+    }
+    // ----- YENİ EKLENEN BÖLÜM BİTİŞ -----
 
     const chatbotPanel = document.getElementById('chatbotPanel');
     if(chatbotPanel) chatbotPanel.innerHTML = `<div class="placeholder-content">Yakında Burada...</div>`;
@@ -83,217 +270,32 @@ document.addEventListener('DOMContentLoaded', () => {
 function showPanel(panelName) {
     document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-
     document.getElementById(panelName + 'Panel').classList.add('active');
     document.querySelector(`.tab-button[onclick*="'${panelName}'"]`).classList.add('active');
-
-    // Ortalama sekmesine tıklandığında sunucudan veriyi çek
     if (panelName === 'averages') {
         fetchAverageResults();
     }
 }
 
 
-// ---------- Su Ayak İzi Bölümü ----------
-const water_questions = [
-    { text: "1) Günde kaç litre içme suyu tüketiyorsunuz?", factor: 0.001, water_type: "blue", category: "household" },
-    { text: "2) Günde kaç dakika duş alıyorsunuz?", factor: 0.0095, water_type: "blue", category: "household" },
-    { text: "3) Günde kaç kez sifon çekiyorsunuz?", factor: 0.006, water_type: "gray", category: "household" },
-    { text: "4) Günde kaç kilogram çamaşır yıkıyorsunuz?", factor: 0.015, water_type: "blue", category: "household" },
-    { text: "5) Günde kaç kez bulaşık yıkıyorsunuz (elde/makinede)?", factor: 0.01, water_type: "gray", category: "household" },
-    { text: "6) Günde kaç fincan çay/kahve içiyorsunuz?", factor: 0.05, water_type: "green", category: "food" },
-    { text: "7) Günde kaç kilogram et tüketiyorsunuz?", factor: 15.0, water_type: "green", category: "food" },
-    { text: "8) Günde kaç kilogram süt ürünü tüketiyorsunuz?", factor: 1.0, water_type: "green", category: "food" },
-    { text: "9) Günde kaç kilogram meyve tüketiyorsunuz?", factor: 0.9, water_type: "green", category: "food" },
-    { text: "10) Günde kaç kilogram sebze tüketiyorsunuz?", factor: 0.2, water_type: "green", category: "food" },
-    { text: "11) Günde kaç kilogram ekmek/tahıl tüketiyorsunuz?", factor: 1.3, water_type: "green", category: "food" },
-    { text: "12) Günde kaç adet yumurta tüketiyorsunuz?", factor: 0.2, water_type: "green", category: "food" },
-    { text: "13) Günde kaç litre paketli içecek (kola vb.) tüketiyorsunuz?", factor: 0.002, water_type: "gray", category: "others" },
-    { text: "14) Günde kaç litre bahçe/saksı sulama suyu kullanıyorsunuz?", factor: 0.001, water_type: "blue", category: "others" },
-    { text: "15) Günde kaç kilometre özel aracınızı kullanıyorsunuz?", factor: 0.0007, water_type: "gray", category: "others" },
-    { text: "16) Günde kaç kilometre toplu taşıma kullanıyorsunuz?", factor: 0.0002, water_type: "gray", category: "others" },
-    { text: "17) Ayda kaç adet giysi/ayakkabı satın alıyorsunuz? (Lütfen aylık adedi girin)", factor: 0.1, water_type: "green", category: "others" },
-    { text: "18) Günde kaç saat elektronik cihaz (bilgisayar, TV vb.) kullanıyorsunuz?", factor: 0.001, water_type: "gray", category: "others" },
-    { text: "19) Günde kaç sayfa kağıt kullanıyorsunuz?", factor: 0.005, water_type: "gray", category: "others" },
-    { text: "20) Günde kaç kilogram gıda israf ediyorsunuz?", factor: 1.0, water_type: "gray", category: "food" },
-    { text: "21) Günde kaç litre temizlik malzemesi (deterjan vb.) kullanıyorsunuz?", factor: 0.001, water_type: "gray", category: "household" },
-    { text: "22) Günde kaç litre bitkisel süt (soya, badem vb.) tüketiyorsunuz?", factor: 0.2, water_type: "blue", category: "food" },
-    { text: "23) Günde kaç saat klimalı/ısıtmalı odalarda vakit geçiriyorsunuz?", factor: 0.0004, water_type: "gray", category: "household" },
-    { text: "24) Günde kaç adet plastik şişe kullanıyorsunuz?", factor: 0.003, water_type: "gray", category: "others" },
-    { text: "25) Günde kaç adet atıştırmalık paketi (cips vb.) tüketiyorsunuz?", factor: 0.15, water_type: "gray", category: "food" }
-];
+// ----- GERİ KALAN TÜM JAVASCRIPT FONKSİYONLARI ÖNCEKİ YANITTAKİ GİBİ AYNI KALIYOR -----
+// (Su Ayak İzi, Genel Ortalamalar ve Karbon Ayak İzi ile ilgili tüm fonksiyonlar)
+
+// Su Ayak İzi Fonksiyonları
+const water_questions = [ { text: "1) Günde kaç litre içme suyu tüketiyorsunuz?", factor: 0.001, water_type: "blue", category: "household" }, { text: "2) Günde kaç dakika duş alıyorsunuz?", factor: 0.0095, water_type: "blue", category: "household" }, { text: "3) Günde kaç kez sifon çekiyorsunuz?", factor: 0.006, water_type: "gray", category: "household" }, { text: "4) Günde kaç kilogram çamaşır yıkıyorsunuz?", factor: 0.015, water_type: "blue", category: "household" }, { text: "5) Günde kaç kez bulaşık yıkıyorsunuz (elde/makinede)?", factor: 0.01, water_type: "gray", category: "household" }, { text: "6) Günde kaç fincan çay/kahve içiyorsunuz?", factor: 0.05, water_type: "green", category: "food" }, { text: "7) Günde kaç kilogram et tüketiyorsunuz?", factor: 15.0, water_type: "green", category: "food" }, { text: "8) Günde kaç kilogram süt ürünü tüketiyorsunuz?", factor: 1.0, water_type: "green", category: "food" }, { text: "9) Günde kaç kilogram meyve tüketiyorsunuz?", factor: 0.9, water_type: "green", category: "food" }, { text: "10) Günde kaç kilogram sebze tüketiyorsunuz?", factor: 0.2, water_type: "green", category: "food" }, { text: "11) Günde kaç kilogram ekmek/tahıl tüketiyorsunuz?", factor: 1.3, water_type: "green", category: "food" }, { text: "12) Günde kaç adet yumurta tüketiyorsunuz?", factor: 0.2, water_type: "green", category: "food" }, { text: "13) Günde kaç litre paketli içecek (kola vb.) tüketiyorsunuz?", factor: 0.002, water_type: "gray", category: "others" }, { text: "14) Günde kaç litre bahçe/saksı sulama suyu kullanıyorsunuz?", factor: 0.001, water_type: "blue", category: "others" }, { text: "15) Günde kaç kilometre özel aracınızı kullanıyorsunuz?", factor: 0.0007, water_type: "gray", category: "others" }, { text: "16) Günde kaç kilometre toplu taşıma kullanıyorsunuz?", factor: 0.0002, water_type: "gray", category: "others" }, { text: "17) Ayda kaç adet giysi/ayakkabı satın alıyorsunuz? (Lütfen aylık adedi girin)", factor: 0.1, water_type: "green", category: "others" }, { text: "18) Günde kaç saat elektronik cihaz (bilgisayar, TV vb.) kullanıyorsunuz?", factor: 0.001, water_type: "gray", category: "others" }, { text: "19) Günde kaç sayfa kağıt kullanıyorsunuz?", factor: 0.005, water_type: "gray", category: "others" }, { text: "20) Günde kaç kilogram gıda israf ediyorsunuz?", factor: 1.0, water_type: "gray", category: "food" }, { text: "21) Günde kaç litre temizlik malzemesi (deterjan vb.) kullanıyorsunuz?", factor: 0.001, water_type: "gray", category: "household" }, { text: "22) Günde kaç litre bitkisel süt (soya, badem vb.) tüketiyorsunuz?", factor: 0.2, water_type: "blue", category: "food" }, { text: "23) Günde kaç saat klimalı/ısıtmalı odalarda vakit geçiriyorsunuz?", factor: 0.0004, water_type: "gray", category: "household" }, { text: "24) Günde kaç adet plastik şişe kullanıyorsunuz?", factor: 0.003, water_type: "gray", category: "others" }, { text: "25) Günde kaç adet atıştırmalık paketi (cips vb.) tüketiyorsunuz?", factor: 0.15, water_type: "gray", category: "food" } ];
 let categoryChartInstance, waterTypeChartInstance, averagesChartInstance;
+function populateWaterQuestions() { const form = document.getElementById('waterForm'); water_questions.forEach((q, index) => { const id = `water_q${index + 1}`; const formGroup = document.createElement('div'); formGroup.className = 'form-group'; formGroup.innerHTML = `<label for="${id}">${q.text}</label><input type="number" id="${id}" name="${id}" min="0" step="any" placeholder="0">`; form.appendChild(formGroup); }); }
+function calculateWaterFootprint() { const footprint = { household: 0.0, food: 0.0, others: 0.0, blue: 0.0, green: 0.0, gray: 0.0 }; water_questions.forEach((q, index) => { const id = `water_q${index + 1}`; const answer = parseFloat(document.getElementById(id).value) || 0.0; const value_m3 = answer * q.factor; footprint[q.category] += value_m3; footprint[q.water_type] += value_m3; }); const total_footprint = footprint.household + footprint.food + footprint.others; footprint.total = total_footprint; document.getElementById('waterTotalText').innerText = `💧 Günlük toplam su ayak iziniz: ${total_footprint.toFixed(3)} m³ (yani ${(total_footprint * 1000).toFixed(0)} Litre)`; let advice = ''; if (total_footprint < 2) advice = "Harika! Su ayak iziniz oldukça düşük. 👏"; else if (total_footprint < 4) advice = "Normal. Su ayak iziniz dünya ortalamasına yakın. 👍"; else advice = "Yüksek! Su ayak iziniz ortalamanın üzerinde. 😟"; document.getElementById('waterAdviceText').innerHTML = advice; drawWaterCharts(footprint); document.getElementById('waterResult').style.display = 'block'; sendDataToServer(footprint); }
+async function sendDataToServer(data) { const serverResponseElement = document.getElementById('server-response'); serverResponseElement.textContent = 'Sonuçlar kaydediliyor...'; serverResponseElement.style.color = 'orange'; try { const response = await fetch('save_data.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), }); const result = await response.json(); if (response.ok && result.status === 'success') { serverResponseElement.textContent = '✅ Sonuçlarınız sunucuya başarıyla kaydedildi!'; serverResponseElement.style.color = 'green'; } else { throw new Error(result.message || 'Sunucuya kaydederken bir hata oluştu.'); } } catch (error) { console.error('Sunucuya gönderme hatası:', error); serverResponseElement.textContent = `❌ Kayıt başarısız: ${error.message}`; serverResponseElement.style.color = 'red'; } }
+function drawWaterCharts(footprint) { if (categoryChartInstance) categoryChartInstance.destroy(); if (waterTypeChartInstance) waterTypeChartInstance.destroy(); const categoryCtx = document.getElementById('categoryChart').getContext('2d'); categoryChartInstance = new Chart(categoryCtx, { type: 'bar', data: { labels: ['Evsel', 'Gıda', 'Diğer'], datasets: [{ data: [footprint.household, footprint.food, footprint.others], backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'] }] }, options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Kategoriye Göre Ayak İzi (m³)' } }, scales: { y: { beginAtZero: true } } } }); const waterTypeCtx = document.getElementById('waterTypeChart').getContext('2d'); waterTypeChartInstance = new Chart(waterTypeCtx, { type: 'bar', data: { labels: ['Mavi Su', 'Yeşil Su', 'Gri Su'], datasets: [{ data: [footprint.blue, footprint.green, footprint.gray], backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'] }] }, options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Su Tipine Göre Ayak İzi (m³)' } }, scales: { y: { beginAtZero: true } } } }); }
+// Genel Ortalamalar Fonksiyonları
+async function fetchAverageResults() { const resultDiv = document.getElementById('averagesResult'); const chartCanvas = document.getElementById('averagesChart'); resultDiv.innerHTML = "<h3>Genel Ortalamalar</h3><p>Ortalamalar sunucudan yükleniyor...</p>"; chartCanvas.style.display = 'none'; if(averagesChartInstance) averagesChartInstance.destroy(); try { const response = await fetch('get_averages.php'); const data = await response.json(); if (data.status === 'success') { const averages = data.averages; resultDiv.innerHTML = `<h3>Tüm Kullanıcıların Genel Ortalamaları (${data.record_count} kayıt üzerinden)</h3><p><strong>Ortalama Toplam Ayak İzi: ${averages.total.toFixed(3)} m³/gün</strong></p><p>Ortalama Evsel Tüketim: ${averages.household.toFixed(3)} m³/gün</p><p>Ortalama Gıda Tüketimi: ${averages.food.toFixed(3)} m³/gün</p><p>Ortalama Diğer Tüketimler: ${averages.others.toFixed(3)} m³/gün</p>`; chartCanvas.style.display = 'block'; drawAveragesChart(averages); } else { resultDiv.innerHTML = `<h3>Genel Ortalamalar</h3><p>${data.message}</p>`; } } catch (error) { console.error('Ortalama verisi alınamadı:', error); resultDiv.innerHTML = '<h3>Hata</h3><p>Ortalama verileri sunucudan alınırken bir sorun oluştu.</p>'; } }
+function drawAveragesChart(averages) { if (averagesChartInstance) averagesChartInstance.destroy(); const averagesCtx = document.getElementById('averagesChart').getContext('2d'); averagesChartInstance = new Chart(averagesCtx, { type: 'doughnut', data: { labels: ['Evsel Tüketim', 'Gıda Tüketimi', 'Diğer Tüketimler'], datasets: [{ label: 'Ortalama Dağılım', data: [averages.household, averages.food, averages.others], backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'], hoverOffset: 4 }] }, options: { responsive: true, plugins: { title: { display: true, text: 'Genel Ortalama Tüketim Dağılımı' } } } }); }
+// Karbon Ayak İzi Fonksiyonları
+const carbon_questions = [ { soru: "1. Günlük ulaşım tercihiniz nedir?", secenekler: { a: ["Yürüyüş / Bisiklet", 0], b: ["Toplu taşıma", 2], c: ["Özel araç", 4] } }, { soru: "2. Haftada kaç gün et tüketirsiniz?", secenekler: { a: ["Hiç", 0], b: ["1-3 gün", 2], c: ["4 gün ve üzeri", 4] } }, { soru: "3. Evinizde enerji tasarruflu ampuller kullanıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazıları", 2], c: ["Hayır", 4] } }, { soru: "4. Geri dönüşüm yapıyor musunuz?", secenekler: { a: ["Evet, düzenli olarak", 0], b: ["Ara sıra", 2], c: ["Hiç", 4] } }, { soru: "5. Tatil için yılda kaç kez uçağa biniyorsunuz?", secenekler: { a: ["Hiç", 0], b: ["1-2 kez", 3], c: ["3 kez ve üzeri", 5] } }, { soru: "6. Evinizde enerji verimli cihazlar kullanıyor musunuz (A++ vb)?", secenekler: { a: ["Evet", 0], b: ["Bazıları", 2], c: ["Hayır", 4] } }, { soru: "7. Su tasarrufu sağlamak için önlem alıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } }, { soru: "8. Elektronik cihazları kullanılmadığında kapatıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } }, { soru: "9. İkinci el ürünler alır mısınız?", secenekler: { a: ["Evet, sık sık", 0], b: ["Ara sıra", 2], c: ["Hayır", 4] } }, { soru: "10. Plastik kullanımını azaltmak için çaba harcar mısınız?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } } ];
+function populateCarbonQuestions() { const form = document.getElementById('carbonForm'); carbon_questions.forEach((q, index) => { const q_name = `carbon_q${index + 1}`; let optionsHTML = ''; for (const [key, value] of Object.entries(q.secenekler)) { const [text, score] = value; optionsHTML += `<label><input type="radio" name="${q_name}" value="${score}" required> ${text}</label>`; } const questionBlock = document.createElement('div'); questionBlock.className = 'question-block'; questionBlock.innerHTML = `<p>${q.soru}</p>${optionsHTML}`; form.appendChild(questionBlock); }); }
+function calculateCarbonFootprint() { const form = document.getElementById('carbonForm'); if (!form.checkValidity()) { alert("Lütfen tüm soruları cevaplayınız."); return; } let score = 0; for (let i = 1; i <= carbon_questions.length; i++) { score += parseInt(document.querySelector(`input[name="carbon_q${i}"]:checked`).value); } const resultDiv = document.getElementById('carbonResult'); let resultHTML = "<h3>🔍 Karbon Ayak İzi Sonucunuz</h3>"; if (score <= 10) resultHTML += "<p>✅ Tebrikler! Karbon ayak iziniz oldukça düşük.</p>"; else if (score <= 25) resultHTML += "<p>⚠️ Orta seviyede bir karbon ayak iziniz var.</p>"; else resultHTML += "<p>❌ Karbon ayak iziniz yüksek!</p>"; resultDiv.innerHTML = resultHTML; resultDiv.style.display = 'block'; }
 
-function populateWaterQuestions() {
-    const form = document.getElementById('waterForm');
-    water_questions.forEach((q, index) => {
-        const id = `water_q${index + 1}`;
-        const formGroup = document.createElement('div');
-        formGroup.className = 'form-group';
-        formGroup.innerHTML = `<label for="${id}">${q.text}</label><input type="number" id="${id}" name="${id}" min="0" step="any" placeholder="0">`;
-        form.appendChild(formGroup);
-    });
-}
-
-function calculateWaterFootprint() {
-    const footprint = { household: 0.0, food: 0.0, others: 0.0, blue: 0.0, green: 0.0, gray: 0.0 };
-    water_questions.forEach((q, index) => {
-        const id = `water_q${index + 1}`;
-        const answer = parseFloat(document.getElementById(id).value) || 0.0;
-        const value_m3 = answer * q.factor;
-        footprint[q.category] += value_m3;
-        footprint[q.water_type] += value_m3;
-    });
-    const total_footprint = footprint.household + footprint.food + footprint.others;
-    footprint.total = total_footprint;
-    document.getElementById('waterTotalText').innerText = `💧 Günlük toplam su ayak iziniz: ${total_footprint.toFixed(3)} m³ (yani ${(total_footprint * 1000).toFixed(0)} Litre)`;
-    let advice = '';
-    if (total_footprint < 2) advice = "Harika! Su ayak iziniz oldukça düşük. 👏";
-    else if (total_footprint < 4) advice = "Normal. Su ayak iziniz dünya ortalamasına yakın. 👍";
-    else advice = "Yüksek! Su ayak iziniz ortalamanın üzerinde. 😟";
-    document.getElementById('waterAdviceText').innerHTML = advice;
-    drawWaterCharts(footprint);
-    document.getElementById('waterResult').style.display = 'block';
-    sendDataToServer(footprint);
-}
-
-async function sendDataToServer(data) {
-    const serverResponseElement = document.getElementById('server-response');
-    serverResponseElement.textContent = 'Sonuçlar kaydediliyor...';
-    serverResponseElement.style.color = 'orange';
-    try {
-        const response = await fetch('save_data.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        if (response.ok && result.status === 'success') {
-            serverResponseElement.textContent = '✅ Sonuçlarınız sunucuya başarıyla kaydedildi!';
-            serverResponseElement.style.color = 'green';
-        } else {
-            throw new Error(result.message || 'Sunucuya kaydederken bir hata oluştu.');
-        }
-    } catch (error) {
-        console.error('Sunucuya gönderme hatası:', error);
-        serverResponseElement.textContent = `❌ Kayıt başarısız: ${error.message}`;
-        serverResponseElement.style.color = 'red';
-    }
-}
-
-function drawWaterCharts(footprint) {
-    if (categoryChartInstance) categoryChartInstance.destroy();
-    if (waterTypeChartInstance) waterTypeChartInstance.destroy();
-    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-    categoryChartInstance = new Chart(categoryCtx, {
-        type: 'bar', data: { labels: ['Evsel', 'Gıda', 'Diğer'], datasets: [{ data: [footprint.household, footprint.food, footprint.others], backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'] }] },
-        options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Kategoriye Göre Ayak İzi (m³)' } }, scales: { y: { beginAtZero: true } } }
-    });
-    const waterTypeCtx = document.getElementById('waterTypeChart').getContext('2d');
-    waterTypeChartInstance = new Chart(waterTypeCtx, {
-        type: 'bar', data: { labels: ['Mavi Su', 'Yeşil Su', 'Gri Su'], datasets: [{ data: [footprint.blue, footprint.green, footprint.gray], backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'] }] },
-        options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Su Tipine Göre Ayak İzi (m³)' } }, scales: { y: { beginAtZero: true } } }
-    });
-}
-
-// ---------- Genel Ortalamalar Bölümü ----------
-async function fetchAverageResults() {
-    const resultDiv = document.getElementById('averagesResult');
-    const chartCanvas = document.getElementById('averagesChart');
-    resultDiv.innerHTML = "<h3>Genel Ortalamalar</h3><p>Ortalamalar sunucudan yükleniyor...</p>";
-    chartCanvas.style.display = 'none';
-    if(averagesChartInstance) averagesChartInstance.destroy();
-
-    try {
-        const response = await fetch('get_averages.php');
-        const data = await response.json();
-
-        if (data.status === 'success') {
-            const averages = data.averages;
-            resultDiv.innerHTML = `
-                <h3>Tüm Kullanıcıların Genel Ortalamaları (${data.record_count} kayıt üzerinden)</h3>
-                <p><strong>Ortalama Toplam Ayak İzi: ${averages.total.toFixed(3)} m³/gün</strong></p>
-                <p>Ortalama Evsel Tüketim: ${averages.household.toFixed(3)} m³/gün</p>
-                <p>Ortalama Gıda Tüketimi: ${averages.food.toFixed(3)} m³/gün</p>
-                <p>Ortalama Diğer Tüketimler: ${averages.others.toFixed(3)} m³/gün</p>
-            `;
-            chartCanvas.style.display = 'block';
-            drawAveragesChart(averages);
-        } else {
-             resultDiv.innerHTML = `<h3>Genel Ortalamalar</h3><p>${data.message}</p>`;
-        }
-    } catch (error) {
-        console.error('Ortalama verisi alınamadı:', error);
-        resultDiv.innerHTML = '<h3>Hata</h3><p>Ortalama verileri sunucudan alınırken bir sorun oluştu.</p>';
-    }
-}
-
-function drawAveragesChart(averages) {
-    if (averagesChartInstance) averagesChartInstance.destroy();
-    const averagesCtx = document.getElementById('averagesChart').getContext('2d');
-    averagesChartInstance = new Chart(averagesCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Evsel Tüketim', 'Gıda Tüketimi', 'Diğer Tüketimler'],
-            datasets: [{
-                label: 'Ortalama Dağılım',
-                data: [averages.household, averages.food, averages.others],
-                backgroundColor: ['#3498db', '#2ecc71', '#95a5a6'],
-                hoverOffset: 4
-            }]
-        },
-        options: { responsive: true, plugins: { title: { display: true, text: 'Genel Ortalama Tüketim Dağılımı' } } }
-    });
-}
-
-// ---------- Karbon Ayak İzi Bölümü ----------
-const carbon_questions = [
-    { soru: "1. Günlük ulaşım tercihiniz nedir?", secenekler: { a: ["Yürüyüş / Bisiklet", 0], b: ["Toplu taşıma", 2], c: ["Özel araç", 4] } },
-    { soru: "2. Haftada kaç gün et tüketirsiniz?", secenekler: { a: ["Hiç", 0], b: ["1-3 gün", 2], c: ["4 gün ve üzeri", 4] } },
-    { soru: "3. Evinizde enerji tasarruflu ampuller kullanıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazıları", 2], c: ["Hayır", 4] } },
-    { soru: "4. Geri dönüşüm yapıyor musunuz?", secenekler: { a: ["Evet, düzenli olarak", 0], b: ["Ara sıra", 2], c: ["Hiç", 4] } },
-    { soru: "5. Tatil için yılda kaç kez uçağa biniyorsunuz?", secenekler: { a: ["Hiç", 0], b: ["1-2 kez", 3], c: ["3 kez ve üzeri", 5] } },
-    { soru: "6. Evinizde enerji verimli cihazlar kullanıyor musunuz (A++ vb)?", secenekler: { a: ["Evet", 0], b: ["Bazıları", 2], c: ["Hayır", 4] } },
-    { soru: "7. Su tasarrufu sağlamak için önlem alıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } },
-    { soru: "8. Elektronik cihazları kullanılmadığında kapatıyor musunuz?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } },
-    { soru: "9. İkinci el ürünler alır mısınız?", secenekler: { a: ["Evet, sık sık", 0], b: ["Ara sıra", 2], c: ["Hayır", 4] } },
-    { soru: "10. Plastik kullanımını azaltmak için çaba harcar mısınız?", secenekler: { a: ["Evet", 0], b: ["Bazen", 2], c: ["Hayır", 4] } }
-];
-
-function populateCarbonQuestions() {
-    const form = document.getElementById('carbonForm');
-    carbon_questions.forEach((q, index) => {
-        const q_name = `carbon_q${index + 1}`;
-        let optionsHTML = '';
-        for (const [key, value] of Object.entries(q.secenekler)) {
-            const [text, score] = value;
-            optionsHTML += `<label><input type="radio" name="${q_name}" value="${score}" required> ${text}</label>`;
-        }
-        const questionBlock = document.createElement('div');
-        questionBlock.className = 'question-block';
-        questionBlock.innerHTML = `<p>${q.soru}</p>${optionsHTML}`;
-        form.appendChild(questionBlock);
-    });
-}
-
-function calculateCarbonFootprint() {
-    const form = document.getElementById('carbonForm');
-    if (!form.checkValidity()) {
-        alert("Lütfen tüm soruları cevaplayınız.");
-        return;
-    }
-    let score = 0;
-    for (let i = 1; i <= carbon_questions.length; i++) {
-        score += parseInt(document.querySelector(`input[name="carbon_q${i}"]:checked`).value);
-    }
-    const resultDiv = document.getElementById('carbonResult');
-    let resultHTML = "<h3>🔍 Karbon Ayak İzi Sonucunuz</h3>";
-    if (score <= 10) resultHTML += "<p>✅ Tebrikler! Karbon ayak iziniz oldukça düşük.</p>";
-    else if (score <= 25) resultHTML += "<p>⚠️ Orta seviyede bir karbon ayak iziniz var.</p>";
-    else resultHTML += "<p>❌ Karbon ayak iziniz yüksek!</p>";
-    resultDiv.innerHTML = resultHTML;
-    resultDiv.style.display = 'block';
-}
 </script>
 
 </body>
