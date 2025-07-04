@@ -6,7 +6,6 @@
     <title>Çevre Ayak İzi Hesaplayıcı</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Sayfanın temel stil ayarları */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f7f6;
@@ -16,7 +15,6 @@
             display: flex;
             justify-content: center;
         }
-
         .container {
             max-width: 800px;
             width: 100%;
@@ -25,21 +23,17 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
             text-align: center;
             color: #2c3e50;
         }
-
-        /* Sekme Butonları */
         .tabs {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap; /* Mobil için kaydırma */
+            flex-wrap: wrap;
             margin-bottom: 20px;
             border-bottom: 2px solid #e0e0e0;
         }
-
         .tab-button {
             padding: 10px 15px;
             cursor: pointer;
@@ -50,37 +44,28 @@
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
         }
-
         .tab-button:hover {
             color: #3498db;
         }
-
         .tab-button.active {
             color: #2980b9;
             border-bottom: 3px solid #2980b9;
         }
-
-        /* Hesaplayıcı İçerikleri */
         .content-panel {
-            display: none; /* Başlangıçta hepsi gizli */
+            display: none;
         }
-
         .content-panel.active {
-            display: block; /* Sadece aktif olan görünür */
+            display: block;
         }
-        
-        /* Form elemanları için genel stil */
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
             color: #555;
         }
-
         input[type="number"], input[type="text"] {
             width: 100px;
             padding: 8px;
@@ -88,7 +73,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        
         .question-block {
             background-color: #f9f9f9;
             padding: 15px;
@@ -105,8 +89,6 @@
             display: block;
             margin-bottom: 5px;
         }
-
-        /* Buton stili */
         .calc-button {
             display: block;
             width: 100%;
@@ -120,11 +102,9 @@
             margin-top: 20px;
             transition: background-color 0.3s ease;
         }
-
         .calc-button:hover {
             background-color: #229954;
         }
-        
         .clear-button {
             background-color: #e74c3c;
             margin-top: 15px;
@@ -135,8 +115,6 @@
         .clear-button:hover {
             background-color: #c0392b;
         }
-
-        /* Sonuç Alanları */
         .result-area {
             margin-top: 25px;
             padding: 15px;
@@ -144,14 +122,12 @@
             background-color: #ecf0f1;
             text-align: center;
         }
-        
         .placeholder-content {
             text-align: center;
             padding: 50px 20px;
             font-size: 1.5em;
             color: #95a5a6;
         }
-
         .chart-container {
             display: flex;
             flex-wrap: wrap;
@@ -159,7 +135,6 @@
             gap: 20px;
             margin-top: 20px;
         }
-        
         .chart-box {
             width: 100%;
             max-width: 350px;
@@ -183,8 +158,9 @@
             <form id="waterForm">
                 <p>Lütfen aşağıdaki soruları günlük tüketim miktarlarınıza göre cevaplayınız.</p>
                 </form>
-            <button type="button" class="calc-button" onclick="calculateWaterFootprint()">Hesapla ve Sonucu İndir</button>
+            <button type="button" class="calc-button" onclick="calculateWaterFootprint()">Hesapla ve Sunucuya Kaydet</button>
             <div id="waterResult" class="result-area" style="display:none;">
+                <p id="server-response" style="font-weight:bold;"></p>
                 <p id="waterTotalText"></p>
                 <p id="waterAdviceText"></p>
                 <div class="chart-container">
@@ -208,7 +184,7 @@
              <div class="chart-container">
                 <div class="chart-box"><canvas id="averagesChart"></canvas></div>
             </div>
-            <button class="calc-button clear-button" onclick="clearHistory()">Geçmişi Temizle</button>
+            <button class="calc-button clear-button" onclick="clearHistory()">Geçmişi Temizle (Tarayıcı Hafızası)</button>
         </div>
         
         <div id="mythsPanel" class="content-panel">
@@ -286,12 +262,10 @@ function populateWaterQuestions() {
 
 function calculateWaterFootprint() {
     const footprint = { household: 0.0, food: 0.0, others: 0.0, blue: 0.0, green: 0.0, gray: 0.0 };
-    const userInputs = [];
 
     water_questions.forEach((q, index) => {
         const id = `water_q${index + 1}`;
         const answer = parseFloat(document.getElementById(id).value) || 0.0;
-        userInputs.push({ question: q.text, answer: answer });
         const value_m3 = answer * q.factor;
         footprint[q.category] += value_m3;
         footprint[q.water_type] += value_m3;
@@ -311,50 +285,44 @@ function calculateWaterFootprint() {
     drawWaterCharts(footprint);
     document.getElementById('waterResult').style.display = 'block';
 
+    sendDataToServer(footprint);
     saveCalculationToHistory(footprint);
-    downloadResultsAsTxt(userInputs, footprint);
 }
 
-function downloadResultsAsTxt(inputs, results) {
-    let fileContent = "Su Ayak İzi Sonuçları\n";
-    fileContent += "======================\n";
-    fileContent += `Hesaplama Tarihi: ${new Date().toLocaleString('tr-TR')}\n\n`;
-    
-    fileContent += "VERİLEN CEVAPLAR:\n";
-    inputs.forEach(input => {
-        fileContent += `- ${input.question}: ${input.answer}\n`;
-    });
+async function sendDataToServer(data) {
+    const serverResponseElement = document.getElementById('server-response');
+    serverResponseElement.textContent = 'Sonuçlar kaydediliyor...';
+    serverResponseElement.style.color = 'orange';
 
-    fileContent += "\n\nHESAPLAMA SONUÇLARI (m³):\n";
-    fileContent += `Evsel Tüketim: ${results.household.toFixed(3)}\n`;
-    fileContent += `Gıda Tüketimi: ${results.food.toFixed(3)}\n`;
-    fileContent += `Diğer Tüketimler: ${results.others.toFixed(3)}\n\n`;
-    fileContent += `Mavi Su: ${results.blue.toFixed(3)}\n`;
-    fileContent += `Yeşil Su: ${results.green.toFixed(3)}\n`;
-    fileContent += `Gri Su: ${results.gray.toFixed(3)}\n\n`;
-    fileContent += `TOPLAM SU AYAK İZİ: ${results.total.toFixed(3)} m³\n`;
+    try {
+        const response = await fetch('save_data.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
 
-    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'su-ayak-izi-sonuclari.txt';
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
+        const result = await response.json();
 
-function saveCalculationToHistory(result) {
-    let history = JSON.parse(localStorage.getItem('waterFootprintHistory')) || [];
-    history.push(result);
-    localStorage.setItem('waterFootprintHistory', JSON.stringify(history));
+        if (response.ok && result.status === 'success') {
+            serverResponseElement.textContent = '✅ Sonuçlarınız sunucuya başarıyla kaydedildi!';
+            serverResponseElement.style.color = 'green';
+        } else {
+            throw new Error(result.message || 'Sunucuya kaydederken bir hata oluştu.');
+        }
+    } catch (error) {
+        console.error('Sunucuya gönderme hatası:', error);
+        serverResponseElement.textContent = `❌ Kayıt başarısız: ${error.message}`;
+        serverResponseElement.style.color = 'red';
+    }
 }
 
 function drawWaterCharts(footprint) {
     if (categoryChartInstance) categoryChartInstance.destroy();
     if (waterTypeChartInstance) waterTypeChartInstance.destroy();
 
-    categoryChartInstance = new Chart(document.getElementById('categoryChart'), {
+    categoryChartInstance = new Chart(document.getElementById('categoryChart').getContext('2d'), {
         type: 'bar',
         data: {
             labels: ['Evsel', 'Gıda', 'Diğer'],
@@ -363,7 +331,7 @@ function drawWaterCharts(footprint) {
         options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Kategoriye Göre Ayak İzi (m³)' } }, scales: { y: { beginAtZero: true } } }
     });
 
-    waterTypeChartInstance = new Chart(document.getElementById('waterTypeChart'), {
+    waterTypeChartInstance = new Chart(document.getElementById('waterTypeChart').getContext('2d'), {
         type: 'bar',
         data: {
             labels: ['Mavi Su', 'Yeşil Su', 'Gri Su'],
@@ -374,13 +342,20 @@ function drawWaterCharts(footprint) {
 }
 
 
-// ---------- Ortalama Sonuçlar Bölümü ----------
+// ---------- Ortalama Sonuçlar Bölümü (Tarayıcı Hafızası) ----------
+
+function saveCalculationToHistory(result) {
+    let history = JSON.parse(localStorage.getItem('waterFootprintHistory')) || [];
+    history.push(result);
+    localStorage.setItem('waterFootprintHistory', JSON.stringify(history));
+}
+
 function showAverageResults() {
     const resultDiv = document.getElementById('averagesResult');
     const history = JSON.parse(localStorage.getItem('waterFootprintHistory')) || [];
     
     if (history.length === 0) {
-        resultDiv.innerHTML = "<h3>Ortalama Sonuçlar</h3><p>Geçmiş bir hesaplama bulunamadı. Lütfen önce Su Ayak İzi sekmesinden bir hesaplama yapın.</p>";
+        resultDiv.innerHTML = "<h3>Ortalama Sonuçlar</h3><p>Bu tarayıcıda geçmiş bir hesaplama bulunamadı. Lütfen önce Su Ayak İzi sekmesinden bir hesaplama yapın.</p>";
         if(averagesChartInstance) averagesChartInstance.destroy();
         document.getElementById('averagesChart').style.display = 'none';
         return;
@@ -397,7 +372,7 @@ function showAverageResults() {
     Object.keys(averages).forEach(key => averages[key] /= history.length);
 
     resultDiv.innerHTML = `
-        <h3>Ortalama Sonuçlar (${history.length} hesaplama üzerinden)</h3>
+        <h3>Bu Tarayıcıdaki Ortalama Sonuçlar (${history.length} hesaplama üzerinden)</h3>
         <p><strong>Ortalama Toplam Ayak İzi: ${averages.total.toFixed(3)} m³/gün</strong></p>
         <p>Ortalama Evsel Tüketim: ${averages.household.toFixed(3)} m³/gün</p>
         <p>Ortalama Gıda Tüketimi: ${averages.food.toFixed(3)} m³/gün</p>
@@ -411,7 +386,7 @@ function showAverageResults() {
 function drawAveragesChart(averages) {
     if (averagesChartInstance) averagesChartInstance.destroy();
     
-    averagesChartInstance = new Chart(document.getElementById('averagesChart'), {
+    averagesChartInstance = new Chart(document.getElementById('averagesChart').getContext('2d'), {
         type: 'doughnut',
         data: {
             labels: ['Evsel Tüketim', 'Gıda Tüketimi', 'Diğer Tüketimler'],
@@ -431,11 +406,10 @@ function drawAveragesChart(averages) {
     });
 }
 
-
 function clearHistory() {
-    if (confirm('Tüm hesaplama geçmişini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+    if (confirm('Bu tarayıcıdaki tüm hesaplama geçmişini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
         localStorage.removeItem('waterFootprintHistory');
-        showAverageResults(); // Ekranı güncelle
+        showAverageResults();
     }
 }
 
@@ -464,4 +438,31 @@ function populateCarbonQuestions() {
             optionsHTML += `<label><input type="radio" name="${q_name}" value="${score}" required> ${text}</label>`;
         }
         const questionBlock = document.createElement('div');
-        ques
+        questionBlock.className = 'question-block';
+        questionBlock.innerHTML = `<p>${q.soru}</p>${optionsHTML}`;
+        form.appendChild(questionBlock);
+    });
+}
+
+function calculateCarbonFootprint() {
+    const form = document.getElementById('carbonForm');
+    if (!form.checkValidity()) {
+        alert("Lütfen tüm soruları cevaplayınız.");
+        return;
+    }
+    let score = 0;
+    for (let i = 1; i <= carbon_questions.length; i++) {
+        score += parseInt(document.querySelector(`input[name="carbon_q${i}"]:checked`).value);
+    }
+    const resultDiv = document.getElementById('carbonResult');
+    let resultHTML = "<h3>🔍 Karbon Ayak İzi Sonucunuz</h3>";
+    if (score <= 10) resultHTML += "<p>✅ Tebrikler! Karbon ayak iziniz oldukça düşük. Bu şekilde devam edin!</p>";
+    else if (score <= 25) resultHTML += "<p>⚠️ Orta seviyede bir karbon ayak iziniz var.</p><p><b>Öneriler:</b><br>- Daha az et tüketin<br>- Toplu taşımaya yönelin<br>- Enerji tasarruflu cihazlar kullanın</p>";
+    else resultHTML += "<p>❌ Karbon ayak iziniz yüksek! Daha sürdürülebilir bir yaşam tarzı benimsemelisiniz.</p><p><b>Öneriler:</b><br>- Uçak yolculuklarını azaltın<br>- Geri dönüşüme önem verin<br>- Yenilenebilir enerji kullanmaya çalışın</p>";
+    resultDiv.innerHTML = resultHTML;
+    resultDiv.style.display = 'block';
+}
+</script>
+
+</body>
+</html>
