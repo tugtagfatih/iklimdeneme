@@ -52,7 +52,7 @@ header('Content-Type: application/json');
 if ($result === false) {
     // Dosyaya yazılamadıysa hata mesajı gönder
     http_response_code(500); // Internal Server Error
-    echo json_encode(['status' => 'error', 'message' => 'Veri dosyaya kaydedilemedi. Dosya yazma izinlerini kontrol edin.']);
+    echo json_encode(['status' => 'error', 'message' => 'Veri dosyaya kaydedilemedi. Klasör yazma izinlerini kontrol edin.']);
 } else {
     // Başarılıysa başarı mesajı gönder
     echo json_encode(['status' => 'success', 'message' => 'Veri başarıyla kaydedildi.']);
